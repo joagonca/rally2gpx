@@ -1,6 +1,6 @@
 FROM node:24
 
-ARG PUPPETEER_ARGS=""
+ARG PUPPETEER_ARGS="--no-sandbox"
 ENV PUPPETEER_ARGS=${PUPPETEER_ARGS}
 
 RUN apt-get update \

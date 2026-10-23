@@ -42,6 +42,12 @@ You can use docker for that.
 $ docker build -t <image_name> .
 ```
 
+The image runs Chrome as root, so `PUPPETEER_ARGS` defaults to `--no-sandbox`. To use other Chrome flags, override it at build time with a comma-separated list, keeping `--no-sandbox`.
+
+```
+$ docker build --build-arg PUPPETEER_ARGS=--no-sandbox,--disable-gpu -t <image_name> .
+```
+
 ## Run
 
 As seen above in the description.
