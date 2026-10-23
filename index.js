@@ -153,13 +153,16 @@ async function scrapePage (url) {
           coordinates: []
         };
 
-        for (let j = 0; j < curStage.geometries.length; j++) {
-          if (curStage.geometries[j].type === 'PG') { // Polygons
-            stage.coordinates = [getPolygonCentroid(curStage.geometries[j].geometry.coordinates[0])];
-            simpleStages[i] = stage;
-          } else if (curStage.geometries[j].type === 'SL' || curStage.geometries[j].type === 'PL') {
-            stage.coordinates = curStage.geometries[j].geometry.coordinates;
-          }
+        // Geometries come in no fixed order, so prefer the stage line and only
+        // fall back to a polygon centroid (e.g. service parks) when there is none
+        const geometries = Array.isArray(curStage.geometries) ? curStage.geometries : [];
+        const line = geometries.find(g => g.type === 'SL' || g.type === 'PL');
+        const polygon = geometries.findLast(g => g.type === 'PG');
+
+        if (line) {
+          stage.coordinates = line.geometry.coordinates;
+        } else if (polygon) {
+          stage.coordinates = [getPolygonCentroid(polygon.geometry.coordinates[0])];
         }
 
         simpleStages[i] = stage;
