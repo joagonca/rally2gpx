@@ -46,3 +46,18 @@ $ docker build -t <image_name> .
 
 As seen above in the description.
 You have a Docker image available @ https://hub.docker.com/r/crazyfacka/rally2gpx
+
+## Run locally
+
+You can also run it without docker. It requires Node.js 22.12 or newer, and `npm install` downloads the Chrome build used by puppeteer.
+
+```
+$ npm install --omit=dev
+$ node index.js https://www.rally-maps.com/Rally-de-Portugal-2019
+```
+
+The GPX files are saved to `./data`. Extra Chrome flags can be passed as a comma-separated list in `PUPPETEER_ARGS`.
+
+```
+$ PUPPETEER_ARGS=--no-sandbox,--disable-gpu node index.js https://www.rally-maps.com/Rally-de-Portugal-2019
+```
